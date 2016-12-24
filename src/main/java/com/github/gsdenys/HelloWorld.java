@@ -20,10 +20,12 @@ import java.util.Map;
  */
 public class HelloWorld {
 
-    public void createNewFolder(){
-        String name = "this-is-just-a-test-folder";
-
-
+    /**
+     * Get repository
+     *
+     * @return Session the repository session
+     */
+    public Session getSession() {
         Map<String, String> parameter = new HashMap<>();
 
         parameter.put(SessionParameter.USER, "test");
@@ -33,7 +35,17 @@ public class HelloWorld {
         parameter.put(SessionParameter.REPOSITORY_ID, "A1");
 
         SessionFactory factory = SessionFactoryImpl.newInstance();
-        Session session = factory.createSession(parameter);
+        return factory.createSession(parameter);
+    }
+
+
+    /**
+     * Create a new Folder at Repository
+     */
+    public void createNewFolder(){
+        String name = "this-is-just-a-test-folder";
+
+        Session session = this.getSession();
 
         Folder f = session.getRootFolder();
 

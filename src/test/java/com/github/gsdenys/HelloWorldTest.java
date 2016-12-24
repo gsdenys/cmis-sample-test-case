@@ -20,32 +20,30 @@ import static org.junit.Assert.*;
  * @since 0.0.1
  * @version 0.0.1
  */
+//init cmis server at port 8383
 @RunWith(CmisInMemoryRunner.class)
 @Configure(port = 8383)
 public class HelloWorldTest {
 
     @Test
+    public void getSession() throws Exception {
+        HelloWorld helloWorld = new HelloWorld();
+        Session session = helloWorld.getSession();
+
+        Assert.assertNotNull("The object should not be null", session);
+    }
+
+    @Test
     public void createNewFolder() throws Exception {
 
-        //call create new folder method
         HelloWorld helloWorld = new HelloWorld();
+        Session session = helloWorld.getSession();
+
         helloWorld.createNewFolder();
-
-        //connect with cmis
-        Map<String, String> parameter = new HashMap<>();
-        parameter.put(SessionParameter.USER, "test");
-        parameter.put(SessionParameter.PASSWORD, "test");
-        parameter.put(SessionParameter.ATOMPUB_URL, "http://localhost:8383/cmis/atom");
-        parameter.put(SessionParameter.BINDING_TYPE, BindingType.ATOMPUB.value());
-        parameter.put(SessionParameter.REPOSITORY_ID, "A1");
-
-        SessionFactory factory = SessionFactoryImpl.newInstance();
-        Session session = factory.createSession(parameter);
 
         //execute query searching by the created folder
         String query = "select * from cmis:folder where cmis:name = 'this-is-just-a-test-folder'";
         ItemIterable<QueryResult> items = session.query(query, false);
-
 
         Assert.assertEquals("The number of result should be 1", items.getPageNumItems(), 1);
     }
