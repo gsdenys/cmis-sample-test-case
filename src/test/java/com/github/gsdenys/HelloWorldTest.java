@@ -47,5 +47,4 @@ public class HelloWorldTest {
 
         Assert.assertEquals("The number of result should be 1", items.getPageNumItems(), 1);
     }
-
 }
